@@ -152,11 +152,11 @@ const PromptReview = () => {
               )}
               <AnimatePresence>
                 {ethicsPassed && (
-                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center gap-3 p-4 rounded-lg bg-green-500/10 border border-green-500/20">
-                    <CheckCircle className="w-6 h-6 text-green-400" />
+                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center gap-3 p-4 rounded-lg bg-white border border-green-600/30">
+                    <CheckCircle className="w-6 h-6 text-green-700" />
                     <div>
-                      <p className="font-medium text-green-300">All checks passed</p>
-                      <p className="text-xs text-green-400/70">Ethics & bias verification completed successfully</p>
+                      <p className="font-medium text-green-800">All checks passed</p>
+                      <p className="text-xs text-green-700">Ethics & bias verification completed successfully</p>
                     </div>
                   </motion.div>
                 )}
