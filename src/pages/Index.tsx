@@ -39,13 +39,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 glass-card">
-        <div className="container mx-auto flex items-center justify-between h-16 px-4">
+      <nav className="fixed top-0 w-full z-50 bg-white shadow-sm">
+        <div className="container mx-auto flex items-center justify-center h-20 px-4 relative">
           <div className="flex items-center gap-3">
-            <img src={snapclipLogo} alt="Snapclip" className="h-12" />
-            <span className="text-xs font-body text-muted-foreground tracking-wider uppercase hidden sm:block">Simplify. Empower. Engage.</span>
+            <img src={snapclipLogo} alt="Snapclip" className="h-14" />
+            <span className="text-sm font-body text-foreground tracking-wider uppercase font-medium">Simplify. Empower. Engage.</span>
           </div>
-          <div className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+          <div className="hidden md:flex items-center gap-6 text-sm text-muted-foreground absolute right-4">
             <a href="#features" className="hover:text-foreground transition-colors">Features</a>
             <a href="#faq" className="hover:text-foreground transition-colors">FAQ</a>
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
@@ -57,19 +57,15 @@ const Index = () => {
       </nav>
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center pt-16">
+      <section className="relative min-h-screen flex items-center justify-center pt-20">
         <div className="absolute inset-0">
           <img src={heroBg} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-background/70" />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-            <img src={snapclipLogo} alt="Snapclip" className="h-20 mx-auto mb-4" />
-            <p className="text-sm tracking-[0.3em] uppercase text-accent font-body mb-6">Simplify. Empower. Engage.</p>
-          </motion.div>
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0.5}>
-            <Badge variant="outline" className="mb-6 px-4 py-1.5 border-primary/30 text-primary">
-              <Sparkles className="w-3 h-3 mr-1" /> Hackathon 2026
+            <Badge variant="outline" className="mb-8 px-6 py-2.5 border-primary/40 text-primary text-lg font-semibold tracking-wide">
+              <Sparkles className="w-5 h-5 mr-2" /> #Hackathon2026
             </Badge>
           </motion.div>
           <motion.h1
@@ -242,10 +238,9 @@ const Index = () => {
           <motion.h2 className="text-3xl md:text-4xl font-bold font-display text-center mb-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
             Pricing
           </motion.h2>
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {[
               { name: "Freemium", price: "Free", badge: "Available for Hackathon Supporters 😊", features: ["5 videos/month", "Up to 2 min length", "2 output formats", "Basic analytics"], highlight: true, cta: "Get Started" },
-              { name: "Pro", price: "€49/mo", badge: "Coming Soon", features: ["Unlimited videos", "Up to 30 min length", "All output formats", "Advanced analytics", "Priority support"], highlight: false, cta: "Coming Soon" },
               { name: "Enterprise", price: "Custom", badge: "Coming Soon", features: ["Custom integrations", "SSO & team management", "Dedicated account manager", "SLA & compliance", "On-premise option"], highlight: false, cta: "Coming Soon" },
             ].map((plan, i) => (
               <motion.div key={plan.name} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
