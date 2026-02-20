@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Monitor, Smartphone, ExternalLink, Play, CheckCircle, Clock, ArrowRight, Send, Youtube, Linkedin, MessageSquare, Instagram, Twitter, Star, X } from "lucide-react";
+import { Monitor, Smartphone, ExternalLink, Play, CheckCircle, Clock, ArrowRight, Send, Youtube, Linkedin, MessageSquare, Instagram, Twitter, Star, X, Bot, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,24 +18,58 @@ const channelIcons: Record<string, React.ElementType> = {
   X: Twitter,
 };
 
-const historySteps = [
-  { time: "10:32", label: "Files uploaded", status: "done" },
-  { time: "10:33", label: "Configuration completed", status: "done" },
-  { time: "10:34", label: "Ethics check passed", status: "done" },
-  { time: "10:35", label: "Video production started", status: "done" },
-  { time: "10:38", label: "Video production complete", status: "done" },
-  { time: "10:38", label: "Approval ready", status: "current" },
-  { time: "—", label: "Ready to publish", status: "pending" },
-];
-
 const Results = () => {
   const navigate = useNavigate();
   const [showSponsorPopup, setShowSponsorPopup] = useState(false);
+  const [approvalState, setApprovalState] = useState<"idle" | "started" | "checking" | "approved">("idle");
+  const [historySteps, setHistorySteps] = useState([
+    { time: "10:32", label: "Files uploaded", status: "done" },
+    { time: "10:33", label: "Configuration completed", status: "done" },
+    { time: "10:34", label: "Ethics check passed", status: "done" },
+    { time: "10:35", label: "Video production started", status: "done" },
+    { time: "10:38", label: "Video production complete", status: "done" },
+    { time: "10:38", label: "Approval ready", status: "current" },
+    { time: "—", label: "Ready to publish", status: "pending" },
+  ]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowSponsorPopup(true), 5000);
+    const timer = setTimeout(() => setShowSponsorPopup(true), 8000);
     return () => clearTimeout(timer);
   }, []);
+
+  const startApproval = () => {
+    setApprovalState("started");
+    // Update history
+    setHistorySteps(prev => prev.map((s, i) => 
+      i === 5 ? { ...s, status: "done" } : s
+    ));
+    
+    // Simulate agent checking
+    setTimeout(() => {
+      setApprovalState("checking");
+      setHistorySteps(prev => [
+        ...prev.slice(0, 6),
+        { time: "10:39", label: "Approval Agent reviewing...", status: "current" },
+        { time: "—", label: "Ready to publish", status: "pending" },
+      ]);
+    }, 2000);
+
+    // Simulate approval complete
+    setTimeout(() => {
+      setApprovalState("approved");
+      setHistorySteps([
+        { time: "10:32", label: "Files uploaded", status: "done" },
+        { time: "10:33", label: "Configuration completed", status: "done" },
+        { time: "10:34", label: "Ethics check passed", status: "done" },
+        { time: "10:35", label: "Video production started", status: "done" },
+        { time: "10:38", label: "Video production complete", status: "done" },
+        { time: "10:38", label: "Approval requested", status: "done" },
+        { time: "10:39", label: "Approval Agent reviewed", status: "done" },
+        { time: "10:40", label: "Videos approved ✓", status: "done" },
+        { time: "10:40", label: "Ready to publish", status: "current" },
+      ]);
+    }, 5000);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -117,11 +151,52 @@ const Results = () => {
               </CardContent>
             </Card>
 
+            {/* Approval Messages */}
+            <AnimatePresence>
+              {approvalState === "started" && (
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/20">
+                  <Bot className="w-6 h-6 text-primary animate-pulse shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-sm">Approval Process Started</p>
+                    <p className="text-sm text-muted-foreground">The Approval Agent will take care of the review. We'll send feedback shortly...</p>
+                  </div>
+                </motion.div>
+              )}
+              {approvalState === "checking" && (
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/20">
+                  <Bot className="w-6 h-6 text-primary animate-pulse shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-sm">Approval Agent Reviewing...</p>
+                    <p className="text-sm text-muted-foreground">Checking content quality, brand compliance, and accessibility standards...</p>
+                  </div>
+                </motion.div>
+              )}
+              {approvalState === "approved" && (
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start gap-3 p-4 rounded-lg bg-white border border-green-600/30">
+                  <ThumbsUp className="w-6 h-6 text-green-700 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-sm text-green-800">Everything looks fine — Videos are approved! ✓</p>
+                    <p className="text-sm text-green-700">The Approval Agent has completed the review. All videos meet quality standards and are ready for publishing.</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Actions */}
             <div className="flex flex-wrap gap-3">
-              <Button className="glow-purple" size="lg">
-                <Send className="w-4 h-4 mr-2" /> Start Approval Process
-              </Button>
+              {approvalState === "idle" ? (
+                <Button className="glow-purple" size="lg" onClick={startApproval}>
+                  <Send className="w-4 h-4 mr-2" /> Start Approval Process
+                </Button>
+              ) : approvalState === "approved" ? (
+                <Button className="glow-purple" size="lg" onClick={() => navigate("/dashboard")}>
+                  <CheckCircle className="w-4 h-4 mr-2" /> Publish & View Dashboard
+                </Button>
+              ) : (
+                <Button className="glow-purple" size="lg" disabled>
+                  <Bot className="w-4 h-4 mr-2 animate-pulse" /> Approval in Progress...
+                </Button>
+              )}
               <Button variant="outline" size="lg" onClick={() => navigate("/dashboard")}>
                 Video Performance <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -135,7 +210,7 @@ const Results = () => {
                 <h3 className="font-display font-semibold mb-4">Process History</h3>
                 <div className="space-y-4">
                   {historySteps.map((step, i) => (
-                    <div key={i} className="flex items-start gap-3">
+                    <motion.div key={`${step.label}-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-start gap-3">
                       <div className="flex flex-col items-center">
                         {step.status === "done" ? (
                           <CheckCircle className="w-5 h-5 text-green-600" />
@@ -156,7 +231,7 @@ const Results = () => {
                         </p>
                         <p className="text-xs text-muted-foreground">{step.time}</p>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </CardContent>
