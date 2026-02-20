@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Space Grotesk", "sans-serif"],
-        body: ["DM Sans", "sans-serif"],
+        display: ["Playfair Display", "serif"],
+        body: ["Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -62,8 +62,8 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         snapclip: {
-          purple: "hsl(var(--snapclip-purple))",
-          blue: "hsl(var(--snapclip-blue))",
+          crimson: "hsl(var(--snapclip-crimson))",
+          gold: "hsl(var(--snapclip-gold))",
           navy: "hsl(var(--snapclip-navy))",
           glow: "hsl(var(--snapclip-glow))",
         },

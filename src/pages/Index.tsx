@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import snapclipLogo from "@/assets/snapclip-logo.png";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -28,10 +29,10 @@ const faqs = [
 ];
 
 const testimonials = [
-  { name: "Sarah Chen", role: "L&D Manager, TechCorp", quote: "Snapclip transformed our onboarding — we went from 3 weeks of video production to same-day delivery. Game changer.", stars: 5 },
-  { name: "Marcus Weber", role: "Communications Lead, FinanceHub", quote: "The AI-powered video creation is incredibly intuitive. Our quarterly reports are now engaging video summaries.", stars: 5 },
-  { name: "Dr. Lisa Müller", role: "Head of Training, MedGroup", quote: "Compliance training videos used to cost us €50k. With Snapclip, we produce them in-house for a fraction of the cost.", stars: 5 },
-  { name: "Tom Andersen", role: "Content Strategist, MediaFlow", quote: "The multi-format export alone saves us hours every week. LinkedIn, YouTube, Instagram — all from one click.", stars: 5 },
+  { name: "Sarah C.", role: "L&D Manager", quote: "Snapclip transformed our onboarding — we went from 3 weeks of video production to same-day delivery. Game changer.", stars: 5 },
+  { name: "Marcus W.", role: "Communications Lead", quote: "The AI-powered video creation is incredibly intuitive. Our quarterly reports are now engaging video summaries.", stars: 5 },
+  { name: "Dr. Lisa M.", role: "Head of Training", quote: "Compliance training videos used to cost us €50k. With Snapclip, we produce them in-house for a fraction of the cost.", stars: 5 },
+  { name: "Tom A.", role: "Content Strategist", quote: "The multi-format export alone saves us hours every week. LinkedIn, YouTube, Instagram — all from one click.", stars: 5 },
 ];
 
 const Index = () => {
@@ -40,7 +41,10 @@ const Index = () => {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 glass-card">
         <div className="container mx-auto flex items-center justify-between h-16 px-4">
-          <img src={snapclipLogo} alt="Snapclip" className="h-8" />
+          <div className="flex items-center gap-3">
+            <img src={snapclipLogo} alt="Snapclip" className="h-12" />
+            <span className="text-xs font-body text-muted-foreground tracking-wider uppercase hidden sm:block">Simplify. Empower. Engage.</span>
+          </div>
           <div className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
             <a href="#features" className="hover:text-foreground transition-colors">Features</a>
             <a href="#faq" className="hover:text-foreground transition-colors">FAQ</a>
@@ -53,13 +57,17 @@ const Index = () => {
       </nav>
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center gradient-hero pt-16">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+      <section className="relative min-h-screen flex items-center justify-center pt-16">
+        <div className="absolute inset-0">
+          <img src={heroBg} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/70" />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
+            <img src={snapclipLogo} alt="Snapclip" className="h-20 mx-auto mb-4" />
+            <p className="text-sm tracking-[0.3em] uppercase text-accent font-body mb-6">Simplify. Empower. Engage.</p>
+          </motion.div>
+          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0.5}>
             <Badge variant="outline" className="mb-6 px-4 py-1.5 border-primary/30 text-primary">
               <Sparkles className="w-3 h-3 mr-1" /> Hackathon 2026
             </Badge>
@@ -236,9 +244,9 @@ const Index = () => {
           </motion.h2>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[
-              { name: "Freemium", price: "Free", badge: "Available for Hackathon Supporters 😊", features: ["5 videos/month", "Up to 2 min length", "2 output formats", "Basic analytics"], highlight: true },
-              { name: "Pro", price: "€49/mo", badge: null, features: ["Unlimited videos", "Up to 30 min length", "All output formats", "Advanced analytics", "Priority support"], highlight: false },
-              { name: "Enterprise", price: "Custom", badge: null, features: ["Custom integrations", "SSO & team management", "Dedicated account manager", "SLA & compliance", "On-premise option"], highlight: false },
+              { name: "Freemium", price: "Free", badge: "Available for Hackathon Supporters 😊", features: ["5 videos/month", "Up to 2 min length", "2 output formats", "Basic analytics"], highlight: true, cta: "Get Started" },
+              { name: "Pro", price: "€49/mo", badge: "Coming Soon", features: ["Unlimited videos", "Up to 30 min length", "All output formats", "Advanced analytics", "Priority support"], highlight: false, cta: "Coming Soon" },
+              { name: "Enterprise", price: "Custom", badge: "Coming Soon", features: ["Custom integrations", "SSO & team management", "Dedicated account manager", "SLA & compliance", "On-premise option"], highlight: false, cta: "Coming Soon" },
             ].map((plan, i) => (
               <motion.div key={plan.name} initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i}>
                 <Card className={`h-full ${plan.highlight ? "border-primary glow-purple" : "glass-card border-0"}`}>
@@ -255,8 +263,11 @@ const Index = () => {
                         </li>
                       ))}
                     </ul>
-                    <Button className="w-full mt-6" variant={plan.highlight ? "default" : "outline"}>
-                      {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+                    {!plan.highlight && (
+                      <p className="text-xs text-muted-foreground mt-4 italic">Depends on Hackathon Votings</p>
+                    )}
+                    <Button className="w-full mt-6" variant={plan.highlight ? "default" : "outline"} disabled={!plan.highlight}>
+                      {plan.cta}
                     </Button>
                   </CardContent>
                 </Card>
@@ -295,7 +306,10 @@ const Index = () => {
       {/* Footer */}
       <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <img src={snapclipLogo} alt="Snapclip" className="h-6" />
+          <div className="flex items-center gap-3">
+            <img src={snapclipLogo} alt="Snapclip" className="h-8" />
+            <span className="text-xs text-muted-foreground tracking-wider uppercase">Simplify. Empower. Engage.</span>
+          </div>
           <p className="text-sm text-muted-foreground">© 2026 Snapclip. Hackathon Project.</p>
         </div>
       </footer>
