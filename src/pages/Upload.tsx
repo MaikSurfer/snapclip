@@ -17,7 +17,11 @@ interface UploadedFile {
 const Upload = () => {
   const navigate = useNavigate();
   const [files, setFiles] = useState<UploadedFile[]>([]);
-  const [youtubeUrls, setYoutubeUrls] = useState<string[]>([]);
+  const [youtubeUrls, setYoutubeUrls] = useState<string[]>([
+    "https://www.youtube.com/watch?v=2MGA-ae0Dv0",
+    "https://www.youtube.com/watch?v=PUB0TaZ7bhA",
+    "https://www.youtube.com/watch?v=ewbkGkLyBmo",
+  ]);
   const [urlInput, setUrlInput] = useState("");
   const [dragOver, setDragOver] = useState(false);
 
