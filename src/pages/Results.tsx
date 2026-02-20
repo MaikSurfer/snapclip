@@ -1,12 +1,14 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Monitor, Smartphone, ExternalLink, Play, CheckCircle, Clock, ArrowRight, Send, Youtube, Linkedin, MessageSquare, Instagram, Twitter } from "lucide-react";
+import { Monitor, Smartphone, ExternalLink, Play, CheckCircle, Clock, ArrowRight, Send, Youtube, Linkedin, MessageSquare, Instagram, Twitter, Star, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import snapclipLogo from "@/assets/snapclip-logo.png";
+import thumbLandscape from "@/assets/thumb-landscape.jpg";
+import thumbVertical from "@/assets/thumb-vertical.jpg";
 
 const channelIcons: Record<string, React.ElementType> = {
   YouTube: Youtube,
@@ -28,6 +30,12 @@ const historySteps = [
 
 const Results = () => {
   const navigate = useNavigate();
+  const [showSponsorPopup, setShowSponsorPopup] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSponsorPopup(true), 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,34 +58,37 @@ const Results = () => {
             {/* Video Previews */}
             <div className="grid sm:grid-cols-2 gap-4">
               {[
-                { label: "Landscape", icon: Monitor, ratio: "aspect-video" },
-                { label: "Vertical", icon: Smartphone, ratio: "aspect-[9/16] max-h-80" },
+                { label: "Landscape", icon: Monitor, ratio: "aspect-video", thumb: thumbLandscape },
+                { label: "Vertical", icon: Smartphone, ratio: "aspect-[9/16] max-h-80", thumb: thumbVertical },
               ].map((v) => (
                 <Dialog key={v.label}>
                   <DialogTrigger asChild>
                     <Card className="glass-card border-0 cursor-pointer hover:border-primary/30 transition-all group">
                       <CardContent className="p-4">
                         <div className={`${v.ratio} bg-secondary rounded-lg mb-3 flex items-center justify-center relative overflow-hidden`}>
-                          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
-                          <Play className="w-12 h-12 text-foreground/50 group-hover:text-primary transition-colors relative z-10" />
+                          <img src={v.thumb} alt={`${v.label} preview`} className="absolute inset-0 w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
+                          <Play className="w-12 h-12 text-white/80 group-hover:text-white transition-colors relative z-10 drop-shadow-lg" />
                         </div>
                         <div className="flex items-center gap-2">
                           <v.icon className="w-4 h-4 text-muted-foreground" />
                           <span className="text-sm font-medium">{v.label} Format</span>
+                          <Badge variant="outline" className="ml-auto text-xs">Science • Molecule</Badge>
                         </div>
                       </CardContent>
                     </Card>
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl">
                     <DialogHeader>
-                      <DialogTitle>{v.label} Preview</DialogTitle>
+                      <DialogTitle>{v.label} Preview — Science Person Explains a Molecule</DialogTitle>
                     </DialogHeader>
-                    <div className={`${v.ratio} bg-secondary rounded-lg flex items-center justify-center`}>
-                      <div className="text-center">
-                        <Play className="w-16 h-16 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm text-muted-foreground">Video preview placeholder</p>
+                    <div className={`${v.ratio} rounded-lg overflow-hidden relative`}>
+                      <img src={v.thumb} alt={`${v.label} preview`} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <Play className="w-16 h-16 text-white drop-shadow-lg" />
                       </div>
                     </div>
+                    <p className="text-sm text-muted-foreground">2-minute educational video: A scientist explains molecular structures with animated 3D visualizations.</p>
                   </DialogContent>
                 </Dialog>
               ))}
@@ -127,7 +138,7 @@ const Results = () => {
                     <div key={i} className="flex items-start gap-3">
                       <div className="flex flex-col items-center">
                         {step.status === "done" ? (
-                          <CheckCircle className="w-5 h-5 text-green-400" />
+                          <CheckCircle className="w-5 h-5 text-green-600" />
                         ) : step.status === "current" ? (
                           <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                             <div className="w-2 h-2 rounded-full bg-primary-foreground" />
@@ -153,6 +164,45 @@ const Results = () => {
           </div>
         </div>
       </div>
+
+      {/* Sponsor Popup */}
+      <AnimatePresence>
+        {showSponsorPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-2xl p-8 max-w-md mx-4 shadow-2xl text-center relative"
+            >
+              <button onClick={() => setShowSponsorPopup(false)} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
+                <X className="w-5 h-5" />
+              </button>
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <Star className="w-8 h-8 text-primary" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Become a Sponsor</h2>
+              <p className="text-lg font-semibold text-primary mb-3">Vote for Snapclip to make it happen!</p>
+              <p className="text-sm text-muted-foreground mb-6">
+                Love what you see? Support us at #Hackathon2026! Your vote helps us bring AI-powered video creation to everyone.
+              </p>
+              <div className="flex gap-3 justify-center">
+                <Button className="glow-purple px-6" size="lg">
+                  <Star className="w-4 h-4 mr-2" /> Vote Now
+                </Button>
+                <Button variant="outline" size="lg" onClick={() => setShowSponsorPopup(false)}>
+                  Maybe Later
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

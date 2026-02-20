@@ -23,17 +23,17 @@ const channels = ["YouTube", "WhatsApp", "MS Streams", "LinkedIn", "Instagram", 
 const Configurator = () => {
   const navigate = useNavigate();
   const [sensitivity, setSensitivity] = useState("public");
-  const [audience, setAudience] = useState("public");
+  const [audience, setAudience] = useState("internal");
   const [videoLength, setVideoLength] = useState([120]);
   const [videoMode, setVideoMode] = useState("single");
   const [videoCount, setVideoCount] = useState(1);
-  const [creator, setCreator] = useState("");
-  const [style, setStyle] = useState("");
-  const [tonality, setTonality] = useState("");
-  const [format_, setFormat] = useState<string[]>(["landscape"]);
-  const [selectedChannels, setSelectedChannels] = useState<string[]>(["YouTube"]);
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const [creator, setCreator] = useState("alex");
+  const [style, setStyle] = useState("educational");
+  const [tonality, setTonality] = useState("corporate");
+  const [format_, setFormat] = useState<string[]>(["landscape", "vertical"]);
+  const [selectedChannels, setSelectedChannels] = useState<string[]>(["YouTube", "MS Streams"]);
+  const [startDate, setStartDate] = useState<Date>(new Date(2026, 2, 1));
+  const [endDate, setEndDate] = useState<Date>(new Date(2026, 5, 30));
 
   const formatLength = (seconds: number) => {
     if (seconds < 60) return `${seconds}s`;
@@ -138,7 +138,7 @@ const Configurator = () => {
               <div className="space-y-4">
                 <div>
                   <Label className="mb-2 block">Content Description</Label>
-                  <Textarea placeholder="Describe the content and key messages of your video..." className="bg-secondary border-0" />
+                  <Textarea placeholder="Describe the content and key messages of your video..." className="bg-secondary border-0" defaultValue="Explain the molecular structure of aspirin (acetylsalicylic acid) using 3D visualizations. Highlight the key chemical bonds and how they relate to the drug's mechanism of action." />
                 </div>
                 <div>
                   <Label className="mb-2 block">Target Audience</Label>
@@ -154,7 +154,7 @@ const Configurator = () => {
                 </div>
                 <div>
                   <Label className="mb-2 block">Core Messages & Objectives</Label>
-                  <Textarea placeholder="What should the video achieve? Key takeaways..." className="bg-secondary border-0" />
+                  <Textarea placeholder="What should the video achieve? Key takeaways..." className="bg-secondary border-0" defaultValue="Viewers should understand the basic molecular structure, identify key functional groups, and appreciate how molecular design affects drug efficacy." />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
@@ -255,7 +255,7 @@ const Configurator = () => {
                 </div>
                 <div>
                   <Label className="mb-2 block">Accessibility</Label>
-                  <Input placeholder="e.g., Subtitles for hearing impaired, color-blind friendly palette..." className="bg-secondary border-0" />
+                  <Input placeholder="e.g., Subtitles for hearing impaired, color-blind friendly palette..." className="bg-secondary border-0" defaultValue="Subtitles enabled, color-blind friendly palette" />
                 </div>
               </div>
             </CardContent>
@@ -277,9 +277,9 @@ const Configurator = () => {
                   <p className="text-2xl font-display font-bold text-accent">€{costEstimate}</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-green-500/10 border border-green-500/20">
-                <Leaf className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
-                <p className="text-sm text-green-300">
+              <div className="flex items-start gap-3 p-4 rounded-lg bg-white border border-green-600/30">
+                <Leaf className="w-5 h-5 text-green-700 shrink-0 mt-0.5" />
+                <p className="text-sm text-green-800 font-medium">
                   This {formatLength(videoLength[0])} video ({format_.length} format{format_.length > 1 ? "s" : ""}) generated approx. 0.5 kg CO₂, which has been fully offset, and is delivered via green streaming to ensure climate-neutral distribution.
                 </p>
               </div>
